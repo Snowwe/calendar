@@ -81,3 +81,13 @@ table {
     margin: 0 auto;
     border-collapse: collapse;
 }
+
+tr, th {
+    height: 120px;
+}
+
+td {
+    border: 1px solid #909186;
+    vertical-align: top;
+    padding: 10px 5px 5px;
+}

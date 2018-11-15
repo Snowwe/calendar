@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendar</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+<main>
+
+    <form action="" method="post" class="calendar-handling">
+        <button id="add-event-btn" class="event-btn">Добавить</button>
+        <button id="upd-event-btn" class="event-btn">Обновить</button>
+        <input type="search" placeholder="Событие, дата или участник">
+        <button type="submit" id="search-btn"><i class="fa fa-search"></i></button>
+    </form>
+
+    <section class="date-choose">
+        <button id="prevY" class="change-date-btn"> &#171;</button>
+        <button id="prev" class="change-date-btn"> &#8249;</button>
+        <select id="date-sel" class="date" title="Выбрать месяц"> </select>
+        <button id="next" class="change-date-btn"> &#8250;</button>
+        <button id="nextY" class="change-date-btn"> &#187;</button>
+        <button id="today-btn" class="today-btn">Сегодня</button>
+    </section>
+
+    <section class="calendar">
+        <table id="month"></table>
+    </section>
+</main>
+
+<script src="js/script.js"></script>
+
+</body>
+</html>

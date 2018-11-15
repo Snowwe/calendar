@@ -1,0 +1,83 @@
+body {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+main {
+    margin: 0;
+    padding: 0;
+}
+button{
+    cursor: pointer;
+}
+button:focus {
+    outline: none;
+}
+
+.calendar-handling {
+    background: #F4F4F4;
+    padding: 30px 5% 10px 5%;
+}
+
+.event-btn {
+    background: #006FCA;
+    padding: 7px 15px;
+    color: #F4F4F4;
+}
+
+input[type='search'] {
+    padding: 7px;
+    border: none;
+    float: right;
+    width: 30%;
+    outline-style: inset;
+    outline-color: #f8f8ff;
+}
+
+button[type='submit'] {
+    margin-right: 5px;
+    float: right;
+    width: 50px;
+    padding: 7px;
+    background: none;
+    border: none;
+}
+
+button[type='submit']:active {
+    outline-style: inset;
+    outline-color: #f8f8ff;
+}
+
+.fa {
+    font-size: 22px;
+    color: #808080;
+}
+
+.date-choose {
+    padding: 30px 5% 10px 5%;
+}
+
+select.date {
+    padding: 2px 5px;
+    font-size: 16px;
+    -webkit-appearance: none;
+    width: 150px;
+    height: 25px;
+}
+
+.change-date-btn {
+    padding: 2px 0 3px;
+    width: 30px;
+}
+
+.today-btn {
+    margin: 0 15px;
+    padding: 4px 25px 3px;
+}
+
+table {
+    width: 90%;
+    display: table;
+    margin: 0 auto;
+    border-collapse: collapse;
+}

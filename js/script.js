@@ -11,19 +11,15 @@ window.onload = function () {
     const addEventBtn = document.getElementById('add-event-btn');
     const updEventBtn = document.getElementById('upd-event-btn');
     const searchBtn = document.getElementById('search-btn');
+    const todayBtn = document.getElementById('today-btn');
     const tableMonth = document.getElementById('month');
-
     let today = new Date();
     let currYear = today.getFullYear();
     let currMonth = today.getMonth();
-    let weekStart = new Date(currYear, currMonth, 1).getDay();
-    // let currDayInMonth = today.daysInMonth;
-    let currDayInMonth = 33 - new Date(currYear, currMonth, 33).getDate();
-    let prevDayInMonth = 33 - new Date(currYear, currMonth - 1, 33).getDate();
-    console.log(currDayInMonth);
+    let currMonthIndex = 0;
 
     createOptionTwin(years, months, dateSel);
-    createMonth();
+    createMonth(currYear, currMonth);
 
     const dateOptions = document.querySelectorAll('#date-sel option');
     let dateOption = document.getElementById('date-sel');
@@ -57,6 +53,10 @@ window.onload = function () {
         e.preventDefault();
         search();
     });
+    todayBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        setCurrMonth();
+    });
     dateSel.addEventListener('change', function (e) {
         e.preventDefault();
         dateSel[dateOption.selectedIndex].selected = 'selected';
@@ -72,6 +72,7 @@ window.onload = function () {
                 select.add(option);
                 if (currMonth === j && currYear === arrY[i]) {
                     option.selected = 'selected';
+                    currMonthIndex = option.value;
                 }
             }
         }
@@ -79,7 +80,17 @@ window.onload = function () {
 
     function changeMonth(index) {
         goToMonth(dateOption.selectedIndex + index);
-        createMonth();
+        let currOpt = dateOption.options[dateOption.selectedIndex].text.split(' ');
+        currYear = currOpt[1];
+
+        for (let monthInd in months) {
+            if (months[monthInd] === currOpt[0]) {
+                currMonth = monthInd;
+                break;
+            }
+        }
+
+        createMonth(+currYear, +currMonth);
     }
 
     function goToMonth(n) {
@@ -99,43 +110,58 @@ window.onload = function () {
 
     }
 
-    function createMonth() {
-        let prevDays = prevDayInMonth - weekStart + 2;
+    function setCurrMonth() {
+        dateOption.selectedIndex = currMonthIndex;
+        changeMonth(0);
+    }
+
+    function createMonth(currYear, currMonth) {
+        let weekStart = new Date(currYear, currMonth, 1).getDay();
+        let currDayInMonth = 33 - new Date(currYear, currMonth, 33).getDate();
+
+        let prevDayInMonthStart;
+        if (currMonth === 11) {
+            prevDayInMonthStart = 33 - new Date(currYear - 1, currMonth - 1, 33).getDate() - weekStart + 2;
+        } else {
+            prevDayInMonthStart = 33 - new Date(currYear, currMonth - 1, 33).getDate() - weekStart + 2;
+        }
+        tableMonth.innerHTML = '';
         let dayMonth = 1;
-        let weekStartTemp = weekStart;
         let week = 0;
-        let monday=0;
+        let monday = 7;
         let header = tableMonth.createTHead();
-        let row;
-        row = header.insertRow(week++);
+        let row = header.insertRow(0);
+
+        //add day prev month
         for (let day in daysWeek) {
-            if (+day !== (weekStartTemp - 1)) {
+            if (+day !== (weekStart - 1)) {
                 let cell = row.insertCell(day);
-                cell.innerHTML = daysWeek[day] + ', ' + (prevDays++);
-            } else {
+                cell.innerHTML = daysWeek[day] + ', ' + (prevDayInMonthStart++);
+            } else { //create current month - headDay+dayWeek
                 let cell = row.insertCell(day);
                 cell.innerHTML = daysWeek[day] + ', ' + (dayMonth++);
-                ++weekStartTemp;
+                ++weekStart;
             }
         }
-        row = header.insertRow(week++);
-        for (let i = 0, len = currDayInMonth; i < len; ++i) {
-            if (monday===7) {
-                row = header.insertRow(week++);
-                monday=0;
-                continue;
+        //create current month - day
+        let bodyTable = tableMonth.createTBody();
+        for (let i = dayMonth, len = currDayInMonth; i <= len; ++i) {
+            if (monday === 7) {
+                row = bodyTable.insertRow(week++);
+                monday = 0;
             }
             let cell = row.insertCell(monday++);
             cell.innerHTML = (dayMonth++);
-            ++weekStartTemp;
-        }
-        for (let i=monday;i<7;++i){
-            dayMonth=1;
-            if(monday!==7){
-                let cell = row.insertCell(monday++);
-                cell.innerHTML = (dayMonth++);
-            }
         }
 
+        //add day next month
+        if (monday < 7) {
+            dayMonth = 1;
+            for (let i = monday; i < 7; ++i) {
+                let cell = row.insertCell(monday++);
+                cell.innerHTML = (dayMonth++);
+
+            }
+        }
     }
 };

@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
+
 <body>
 <main>
 
@@ -25,9 +26,20 @@
         <button id="today-btn" class="today-btn">Сегодня</button>
     </section>
 
-    <section class="calendar" id="month">
+    <section class="calendar" id="month"></section>
 
+    <section class="event-day" id="event-day">
+        <button id="close-btn" class="close-btn"> &times;</button>
+        <div class="event-div">
+            <input type="text" class="event-name" placeholder="Событие">
+            <input type="date" class="event-date" title="">
+            <input type="text" class="event-member" placeholder="Имена участников">
+            <textarea rows="5" maxlength="105" placeholder="Описание"> </textarea>
+            <button type="submit" id="ok">Готово</button>
+            <button id="cancel">Удалить</button>
+        </div>
     </section>
+
 </main>
 
 <script src="js/script.js"></script>

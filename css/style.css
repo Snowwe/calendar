@@ -7,9 +7,11 @@ main {
     margin: 0;
     padding: 0;
 }
-button{
+
+button {
     cursor: pointer;
 }
+
 button:focus {
     outline: none;
 }
@@ -30,11 +32,10 @@ input[type='search'] {
     border: none;
     float: right;
     width: 30%;
-    outline-style: inset;
-    outline-color: #f8f8ff;
+    outline: #f8f8ff inset;
 }
 
-button[type='submit'] {
+#search-btn {
     margin-right: 5px;
     float: right;
     width: 50px;
@@ -43,9 +44,8 @@ button[type='submit'] {
     border: none;
 }
 
-button[type='submit']:active {
-    outline-style: inset;
-    outline-color: #f8f8ff;
+#search-btn:active {
+    outline: #f8f8ff inset;
 }
 
 .fa {
@@ -93,7 +93,65 @@ td {
     vertical-align: top;
     padding: 10px 5px 5px;
 }
-td:hover{
+
+td:hover {
     background: #E5F1F9;
     border: 1px solid #87C3F3;
+}
+
+.event-day {
+    overflow: hidden;
+    position: fixed;
+    top: 30px;
+    left: 40px;
+    width: 230px;
+    padding: 15px;
+    background-color: #C5C5C5;
+    color: #3A3A3A;
+    border-radius: 5px;
+    font-size: 14px;
+    display: none;
+}
+
+.event-div {
+    display: inline-block;
+    width: 210px;
+    border: 1px solid #006FCA;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+.close-btn {
+    float: right;
+    margin: -5px -10px 0 0;
+    border: none;
+    background: none;
+    padding: 5px;
+}
+
+.close-btn:active {
+    outline: #f8f8ff inset;
+}
+
+.event-div textarea {
+    resize: none;
+    overflow: auto;
+    outline: none;
+    padding: 5px;
+    display: block;
+    margin: 10px auto;
+    width: 90%;
+}
+
+.event-div input {
+    display: block;
+    padding: 5px;
+    margin: 10px auto;
+    width: 90%;
+}
+
+.event-div button {
+    padding: 5px;
+    margin: 0 5px;
 }

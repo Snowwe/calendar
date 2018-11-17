@@ -83,11 +83,17 @@ table {
 }
 
 tr, th {
-    height: 120px;
+    height: 100px;
+
 }
 
 td {
+    width: 12%;
     border: 1px solid #909186;
     vertical-align: top;
     padding: 10px 5px 5px;
+}
+td:hover{
+    background: #E5F1F9;
+    border: 1px solid #87C3F3;
 }

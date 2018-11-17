@@ -16,6 +16,8 @@ window.onload = function () {
     let today = new Date();
     let currYear = today.getFullYear();
     let currMonth = today.getMonth();
+    const currDay = today.getDate();
+    const todayMonth = currMonth;
     let currMonthIndex = 0;
 
     createOptionTwin(years, months, dateSel);
@@ -118,7 +120,6 @@ window.onload = function () {
     function createMonth(currYear, currMonth) {
         let weekStart = new Date(currYear, currMonth, 1).getDay();
         let currDayInMonth = 33 - new Date(currYear, currMonth, 33).getDate();
-
         let prevDayInMonthStart;
         if (currMonth === 11) {
             prevDayInMonthStart = 33 - new Date(currYear - 1, currMonth - 1, 33).getDate() - weekStart + 2;
@@ -129,7 +130,8 @@ window.onload = function () {
         let dayMonth = 1;
         let week = 0;
         let monday = 7;
-        let header = tableMonth.createTHead();
+        var table = document.createElement('table');
+        let header = table.createTHead();
         let row = header.insertRow(0);
 
         //add day prev month
@@ -141,19 +143,24 @@ window.onload = function () {
                 let cell = row.insertCell(day);
                 cell.innerHTML = daysWeek[day] + ', ' + (dayMonth++);
                 ++weekStart;
+                if (currDay === dayMonth &&todayMonth===currMonth) {
+                    cell.style.background = '#F4F4F4';
+                }
             }
         }
         //create current month - day
-        let bodyTable = tableMonth.createTBody();
+        let bodyTable = table.createTBody();
         for (let i = dayMonth, len = currDayInMonth; i <= len; ++i) {
             if (monday === 7) {
                 row = bodyTable.insertRow(week++);
                 monday = 0;
             }
             let cell = row.insertCell(monday++);
+            if (currDay === dayMonth &&todayMonth===currMonth) {
+                cell.style.background = '#F4F4F4';
+            }
             cell.innerHTML = (dayMonth++);
         }
-
         //add day next month
         if (monday < 7) {
             dayMonth = 1;
@@ -163,5 +170,6 @@ window.onload = function () {
 
             }
         }
+        tableMonth.appendChild(table);
     }
 };

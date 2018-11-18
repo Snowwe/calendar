@@ -13,10 +13,14 @@ window.onload = function () {
     const searchBtn = document.getElementById('search-btn');
     const todayBtn = document.getElementById('today-btn');
     const tableMonth = document.getElementById('month');
+    let eventDay = document.getElementById('event-day');
+    let closeBtn = document.getElementById('close-btn');
+    let okBtn = document.getElementById('ok-btn');
+    let deleteBtn = document.getElementById('delete-btn');
     let today = new Date();
     let currYear = today.getFullYear();
     let currMonth = today.getMonth();
-    const currDay = today.getDate();
+    const todayDay = today.getDate();
     const todayMonth = currMonth;
     let currMonthIndex = 0;
 
@@ -29,39 +33,76 @@ window.onload = function () {
     prev.addEventListener('click', function (e) {
         e.preventDefault();
         changeMonth(-1);
-    });
+    }, true);
     next.addEventListener('click', function (e) {
         e.preventDefault();
         changeMonth(1);
-    });
+    }, true);
+
     prevY.addEventListener('click', function (e) {
         e.preventDefault();
         changeMonth(-12);
-    });
+    }, true);
+
     nextY.addEventListener('click', function (e) {
         e.preventDefault();
         changeMonth(12);
-    });
+    }, true);
 
     addEventBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        addEvent();
-    });
+        displayOnEvent();
+    }, true);
+
     updEventBtn.addEventListener('click', function (e) {
         e.preventDefault();
-        updEvent();
-    });
+        displayOnEvent();
+    }, true);
+
     searchBtn.addEventListener('click', function (e) {
         e.preventDefault();
         search();
-    });
+    }, true);
+
     todayBtn.addEventListener('click', function (e) {
         e.preventDefault();
         setCurrMonth();
-    });
+    }, true);
+
     dateSel.addEventListener('change', function (e) {
         e.preventDefault();
         dateSel[dateOption.selectedIndex].selected = 'selected';
+    }, true);
+
+    todayBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        setCurrMonth();
+    }, true);
+
+    let GLOB = null;
+    tableMonth.addEventListener("click", function (e) {
+        e.preventDefault();
+        if (e.target.nodeName === "TD" && GLOB !== e.target) {
+            e.target.style.background = '#edf9bd';
+            e.target.style.outline = '2px solid #92f39b';
+            e.target.style.outlineOffset = '-1px';
+        }
+        if (GLOB && GLOB !== e.target) {
+            GLOB.style.background = '';
+            GLOB.style.outline = '';
+            GLOB.style.outlineOffset = '';
+        }
+        GLOB = e.target;
+    });
+
+    closeBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        this.parentNode.style.display = 'none';
+    }, true);
+
+    okBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        createEvent();
     });
 
     function createOptionTwin(arrY, arrM, select) {
@@ -84,14 +125,12 @@ window.onload = function () {
         goToMonth(dateOption.selectedIndex + index);
         let currOpt = dateOption.options[dateOption.selectedIndex].text.split(' ');
         currYear = currOpt[1];
-
         for (let monthInd in months) {
             if (months[monthInd] === currOpt[0]) {
                 currMonth = monthInd;
                 break;
             }
         }
-
         createMonth(+currYear, +currMonth);
     }
 
@@ -100,15 +139,29 @@ window.onload = function () {
         dateSel[dateOption.selectedIndex].selected = 'selected';
     }
 
-    function addEvent() {
-
-    }
-
-    function updEvent() {
-
+    function displayOnEvent() {
+        eventDay.style.display = 'block';
     }
 
     function search() {
+
+    }
+
+    function createEvent() {
+        let eventName = document.getElementsByClassName('event-name')[0].value;
+        let eventDate = document.getElementsByClassName('event-date')[0].value;
+        eventDate = eventDate.split('-');
+        let eventDay = eventDate[2];
+        let eventMonth = eventDate[1] - 1;
+        let eventYear = eventDate[0];
+        let eventMember = document.getElementsByClassName('event-member')[0].value;
+        let eventText = document.getElementsByClassName('event-text')[0].value;
+        if (eventDate[0]) {
+            let index = eventMonth - currMonth + 12 * (eventYear - currYear);
+            changeMonth(index);
+        }
+
+        console.log(eventDate, eventDay, eventMonth, eventYear);
 
     }
 
@@ -121,29 +174,29 @@ window.onload = function () {
         let weekStart = new Date(currYear, currMonth, 1).getDay();
         let currDayInMonth = 33 - new Date(currYear, currMonth, 33).getDate();
         let prevDayInMonthStart;
-        if (currMonth === 11) {
-            prevDayInMonthStart = 33 - new Date(currYear - 1, currMonth - 1, 33).getDate() - weekStart + 2;
-        } else {
-            prevDayInMonthStart = 33 - new Date(currYear, currMonth - 1, 33).getDate() - weekStart + 2;
-        }
+        prevDayInMonthStart = (currMonth === 11) ?
+            33 - new Date(currYear - 1, currMonth - 1, 33).getDate() - weekStart + 2
+            : 33 - new Date(currYear, currMonth - 1, 33).getDate() - weekStart + 2;
+
         tableMonth.innerHTML = '';
         let dayMonth = 1;
         let week = 0;
         let monday = 7;
-        var table = document.createElement('table');
+        let table = document.createElement('table');
         let header = table.createTHead();
         let row = header.insertRow(0);
+        let cell;
 
         //add day prev month
         for (let day in daysWeek) {
             if (+day !== (weekStart - 1)) {
-                let cell = row.insertCell(day);
+                cell = row.insertCell(+day);
                 cell.innerHTML = daysWeek[day] + ', ' + (prevDayInMonthStart++);
             } else { //create current month - headDay+dayWeek
-                let cell = row.insertCell(day);
+                cell = row.insertCell(+day);
                 cell.innerHTML = daysWeek[day] + ', ' + (dayMonth++);
                 ++weekStart;
-                if (currDay === dayMonth &&todayMonth===currMonth) {
+                if (todayDay === dayMonth && todayMonth === currMonth) {
                     cell.style.background = '#F4F4F4';
                 }
             }
@@ -156,7 +209,7 @@ window.onload = function () {
                 monday = 0;
             }
             let cell = row.insertCell(monday++);
-            if (currDay === dayMonth &&todayMonth===currMonth) {
+            if (todayDay === dayMonth && todayMonth === currMonth) {
                 cell.style.background = '#F4F4F4';
             }
             cell.innerHTML = (dayMonth++);
@@ -165,9 +218,8 @@ window.onload = function () {
         if (monday < 7) {
             dayMonth = 1;
             for (let i = monday; i < 7; ++i) {
-                let cell = row.insertCell(monday++);
+                cell = row.insertCell(monday++);
                 cell.innerHTML = (dayMonth++);
-
             }
         }
         tableMonth.appendChild(table);

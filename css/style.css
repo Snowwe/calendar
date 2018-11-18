@@ -54,7 +54,7 @@ input[type='search'] {
 }
 
 .date-choose {
-    padding: 30px 5% 10px 5%;
+    padding: 20px 5%;
 }
 
 select.date {
@@ -84,7 +84,6 @@ table {
 
 tr, th {
     height: 100px;
-
 }
 
 td {
@@ -96,7 +95,14 @@ td {
 
 td:hover {
     background: #E5F1F9;
-    border: 1px solid #87C3F3;
+    outline: 2px solid #87C3F3;
+    outline-offset: -1px;
+}
+
+td.active {
+    background: #edf9bd;
+    outline: 2px solid #92f39b;
+    outline-offset: -1px;
 }
 
 .event-day {
@@ -154,4 +160,12 @@ td:hover {
 .event-div button {
     padding: 5px;
     margin: 0 5px;
+}
+
+td>div{
+    border: 1px solid orangered;
+    padding: 5px;
+    max-width: 90%;
+    text-align: justify;
+    font-size: 10px;
 }

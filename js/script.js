@@ -23,7 +23,7 @@ window.onload = function () {
     const todayDay = today.getDate();
     const todayMonth = currMonth;
     let currMonthIndex = 0;
-
+    let objEvent = {};
     createOptionTwin(years, months, dateSel);
     createMonth(currYear, currMonth);
 
@@ -140,6 +140,7 @@ window.onload = function () {
     }
 
     function displayOnEvent() {
+
         eventDay.style.display = 'block';
     }
 
@@ -148,21 +149,45 @@ window.onload = function () {
     }
 
     function createEvent() {
+        let tableTDay = getTdEvent();
         let eventName = document.getElementsByClassName('event-name')[0].value;
+        let eventMember = document.getElementsByClassName('event-member')[0].value;
+        let eventText = document.getElementsByClassName('event-text')[0].value;
+
+        let div = document.createElement('div');
+
+        div.innerText += eventName + '\n' + eventMember + '\n' + eventText;
+
+        tableTDay.appendChild(div);
+    }
+
+    function getTdEvent() {
         let eventDate = document.getElementsByClassName('event-date')[0].value;
         eventDate = eventDate.split('-');
         let eventDay = eventDate[2];
         let eventMonth = eventDate[1] - 1;
         let eventYear = eventDate[0];
-        let eventMember = document.getElementsByClassName('event-member')[0].value;
-        let eventText = document.getElementsByClassName('event-text')[0].value;
+
         if (eventDate[0]) {
             let index = eventMonth - currMonth + 12 * (eventYear - currYear);
             changeMonth(index);
         }
+        let weekStart = new Date(currYear, currMonth, 1).getDay() - 1;
+        let daysTD = document.querySelectorAll("td");
+        let tableTDay = 0;
 
-        console.log(eventDate, eventDay, eventMonth, eventYear);
+        for (let day = weekStart, len = daysTD.length; day < len; ++day) {
+            let dayTemp = daysTD[day].innerText;
+            dayTemp = dayTemp.split(', ');
+            dayTemp = (dayTemp[1]) ? dayTemp[1] : dayTemp[0];
 
+            if (+eventDay === +dayTemp) {
+                tableTDay = day;
+                break;
+            }
+        }
+
+        return daysTD[tableTDay];
     }
 
     function setCurrMonth() {
